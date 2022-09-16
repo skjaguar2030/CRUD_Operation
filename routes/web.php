@@ -16,11 +16,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/', [EmployeeController::class, 'index'])->name('employee.index')->middleware('manual_auth');
 Route::get('/create', [EmployeeController::class, 'create'])->name('employee.create');
 Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
 
 Route::post('/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+Route::post('/storeRg', [RegisterController::class, 'store'])->name('register.store');
+
 Route::post('/update', [EmployeeController::class, 'update'])->name('employee.update');
 // When an incoming request matches the specified route URI, the "update" method on the App\Http\Controllers\EmployeeController class will be invoked and the route parameters will be passed to the method.
 
@@ -36,6 +39,8 @@ Route::get('/employeeList/{id}', [EmployeeController::class, 'employeeListEdit']
 Route::get('/restore/{id}', [EmployeeController::class, 'restore'])->name('employee.restore');
 Route::get('/destroy/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
-Route::get('/register', [RegisterController::class, 'register'])->name('employee.register');
+Route::get('/register', [RegisterController::class, 'register'])->name('register.register');
+Route::get('/login', [RegisterController::class, 'login'])->name('register.login');
+Route::post('/login/check', [RegisterController::class, 'auth'])->name('register.login.check');
 
 

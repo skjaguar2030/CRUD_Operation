@@ -13,6 +13,40 @@ class RegisterController extends Controller
 {
     //
 
+    public function login () 
+    {
+        
+        return view('login');
+
+    }
+
+    public function auth(Request $request){
+
+        // validate
+
+        $user = Register::where(['email'=> $request->email, 'password'=> $request->password])->first();
+
+        // $user = Register::where(['email'=> $request->email])
+        //                   ->where(['password'=> $request->password])->first();
+
+        if($user){
+            session(['loggedIN' => $user->id]);
+            return redirect()->route('employee.index');
+
+        }
+        else{
+            return redirect()->back()->with(["message"=> "Credentials doesn't match"]);
+        }
+
+
+
+
+        // Via a request instance...
+// $request->session()->put('key', 'value');
+ 
+// Via the global "session" helper...
+    }
+
     public function register () 
     {
         
@@ -31,11 +65,11 @@ class RegisterController extends Controller
             'email' => 'required|unique:registers|email|min:8',
             'mobile' => 'required',
             // 'mobile' => 'required|',
-            'password' => 'required|unique:registers|email|min:8',
+            'password' => 'required',
             
         ]);
 
-        if($validator->passes()) {
+        if($validator == true) {
 
             $registered = new Register();
 
@@ -47,12 +81,15 @@ class RegisterController extends Controller
             
             $registered->save();
                 
-            return response()->json(["result"=> "ok"]);
+            // return response()->json(["result"=> "ok"]);
             // return view('login');
+
+            return view('retrieve');
             
         };
         
-        return response()->json(['error' => $validator->errors()->all()]) ;
+        // return response()->json(['error' => $validator->errors()->all()]) ;
+        return redirect()->route('employee.index');
 
     }
 }
