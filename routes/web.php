@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +35,7 @@ Route::get('/employeeList/{id}', [EmployeeController::class, 'employeeListEdit']
 // These routes where specificaly created for soft deleting
 Route::get('/restore/{id}', [EmployeeController::class, 'restore'])->name('employee.restore');
 Route::get('/destroy/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+
+Route::get('/register', [RegisterController::class, 'register'])->name('employee.register');
 
 

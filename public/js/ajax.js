@@ -7,7 +7,6 @@ function buildTable(){
 
     $.ajax({
         method: "GET",
-        
         url: '/employeeList',
         processData: false,
         dataType: " JSON",
@@ -144,7 +143,32 @@ buildTable();
             }
         })
         .fail(function(error){
-        console.log(error);
+            console.log(error);
+
+            if(error.status == 422){
+
+                
+
+                let formErrors = error.responseJSON.errors;
+// console.log(formErrors);
+                // looping an object
+                for(const invalidFormInputs in formErrors){
+
+                    let listOfInputErrors;
+
+                    // looping an array
+                    for(const singleError of formErrors[invalidFormInputs]){
+
+                        listOfInputErrors += `<p class='text-danger'> ${singleError} </p>`
+
+                    }
+
+                $('.error_msg_'+invalidFormInputs).html(listOfInputErrors);
+                
+                console.log(invalidFormInputs);
+                }
+
+            }
         });
 
 

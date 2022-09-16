@@ -114,29 +114,34 @@
                                     <label for="exampleInputEmail1" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" name="name">
                                     <div id="emailHelp" class="form-text">We'll never share your name with anyone else.</div>
+                                    <div class="error_msg_name"></div>
                                 </div>
                     
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="email">
                                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                    <div class="error_msg_email"></div>
                                 </div>
                     
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Salary</label>
                                     <input type="decimal" class="form-control" id="exampleInputName" aria-describedby="emailHelp"  name="salary">
                                     <div id="emailHelp" class="form-text">We'll never share your Salary with anyone else.</div>
+                                    <div class="error_msg_salary"></div>
                                 </div>
                     
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">mobile</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1"  name="mobile">
                                     <div id="emailHelp" class="form-text">We'll never share your phone number with anyone else.</div>
+                                    <div class="error_msg_mobile"></div>
                                 </div>
                     
                                 <div class="form-group">
                                     <label for="exampleFormControlFile1">Upload image</label>
                                     <input type="file" class="form-control-file" id="image" name="image">
+                                    <div class="error_msg_image"></div>
                                 </div>
                     
                                 <div class="mb-3 form-check">

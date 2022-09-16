@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Test\Constraint\ResponseIsSuccessful;
+use Validator;
 
+use Symfony\Component\HttpFoundation\Test\Constraint\ResponseIsSuccessful;
 //  Controllers are not required to extend a base class. However, you will not have access to convenient features such as the middleware and authorize methods.
 
 class EmployeeController extends Controller
@@ -40,70 +41,110 @@ class EmployeeController extends Controller
 
         // dd($request->all());
 
-        $employee = new Employee();
+        // This is the validation method
+        $validator = $request->validate([
 
-        // Actually there is even a shorter way to upload an image to musql database
+            'name' => 'required|unique:employees|max:255',
+            'email' => 'required|email|min:8',
+            'salary' => 'required|',
+            // 'mobile' => 'required|',
+            'image' => 'required|mimes:jpeg,jpg,png|max:2048',
+        ]);
 
-        // public function store (Request $request) {
+        if($validator->passes()) {
+
+            $employee = new Employee();
+
+            if($file = $request->file('image')){
+
+                $filename = time().$file->getClientOriginalName();
+
+                $file->move(public_path('uploads'), $filename);
+
+                $employee->image = $filename;
+                
+            }
+
+            $employee-> name = $request->input('name');
+            $employee-> email = $request->input('email');
+            $employee-> salary = $request->input('salary');
+            $employee-> mobile = $request->input('mobile');
+            
+            $employee->save();
+                
+            return response()->json(["result"=> "ok"]);
+            
+        };
+        
+        return response()->json(['error' => $validator->errors()->all()]) ;
+
+        //This code underneath is uselless since we're validating our form
+        // $employee = new Employee();
+
+        // // Actually there is even a shorter way to upload an image to musql database
+
+        // // public function store (Request $request) {
   
-        //     $imageName = time().'.'.$request->image->getClientOriginalExtension();
-        //     $request->image->move(public_path('/uploadedimages'), $imageName);
+        // //     $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        // //     $request->image->move(public_path('/uploadedimages'), $imageName);
           
-        //     // then you can save $imageName to the database
+        // //     // then you can save $imageName to the database
           
-        //   }  // The above code is from stackOverflow
+        // //   }  // The above code is from stackOverflow
 
-        // This condition here allows us 
-        if($file = $request->file('image')) {
-            //store file into stamps folder
+        // // This condition here allows us 
+        // if($file = $request->file('image')) {
+        //     //store file into stamps folder
 
-            // I got this from stackOverflow -> "  Use the file() method to access the uploaded file "
+        //     // I got this from stackOverflow -> "  Use the file() method to access the uploaded file "
 
-            // StackOverflow even proposed me this line of code
-            // $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+        //     // StackOverflow even proposed me this line of code
+        //     // $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
  
 
-            $filename = time().$file->getClientOriginalName();
-            // don't really understand what this declaration is supposed to do???
+        //     $filename = time().$file->getClientOriginalName();
+        //     // don't really understand what this declaration is supposed to do???
 
-            $file->move(public_path('uploads'), $filename);
+        //     $file->move(public_path('uploads'), $filename);
 
-            $employee->image = $filename;
-        }
+        //     $employee->image = $filename;
+
+        //     return response()->json(["result"=> "ok"]);
+        // }
 
 
-        $employee-> name = $request->input('name');
-        $employee-> email = $request->input('email');
-        $employee-> salary = $request->input('salary');
-        $employee-> mobile = $request->input('mobile');
+        // $employee-> name = $request->input('name');
+        // $employee-> email = $request->input('email');
+        // $employee-> salary = $request->input('salary');
+        // $employee-> mobile = $request->input('mobile');
         
-        $employee->save();
+        // $employee->save();
 
-        if($employee->save()){
-            return response()->json(["result"=> "ok", "data"=> Employee::all()]);  // how is this code supposed to be executed???
-        }
-        else{
-            return response()->json(["result"=> "error"]);
-
-        }
-
-
-        // try {
-        //     //code...
-        //     $employee->save();
-
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-
-        // return response()->json(["result"=> $th]);
-        
+        // if($employee->save()){
+        //     return response()->json(["result"=> "ok", "data"=> Employee::all()]);  // how is this code supposed to be executed???
+        // }
+        // else{
+        //     return response()->json(["result"=> "error"]);
 
         // }
 
-        return response()->json(["result"=> "ok"]);
+
+        // // try {
+        // //     //code...
+        // //     $employee->save();
+
+        // // } catch (\Throwable $th) {
+        // //     //throw $th;
+
+        // // return response()->json(["result"=> $th]);
+        
+
+        // // }
+
+        // return response()->json(["result"=> "ok"]);
 
 
-        // return redirect()->route('employee.index');
+        // // return redirect()->route('employee.index');
     }
 
     public function edit($id){
