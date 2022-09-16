@@ -12,8 +12,6 @@
 
     <div class="container mt-4">
 
-        <!-- Button trigger modal -->
-
         @if(session('message'))
 
         <div class="alert alert-danger"> {{session('message')}} </div>
